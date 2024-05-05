@@ -12,12 +12,14 @@ main
 │           │   ├── ContactDaoImpl.java
 │           │   └── Dao.java
 │           ├── main
-│           │   └── ConnectionFactory.java
+│           │   ├── ConnectionFactory.java
+|           |   └── ServletAction.java 
 │           ├── models
 │           │   └── Contact.java
 │           ├── resources
 │           │   └── dbconnection.properties
 │           └── servlets
+|               ├── MainServlet.java
 │               ├── RegisterDeleteServlet.java
 │               ├── RegisterInsertServlet.java
 │               └── RegisterUpdateServlet.java
@@ -59,6 +61,10 @@ Implementação da interface `Dao` para a entidade `Contact`, fornecendo método
 
 ## Servlets Java
 
+### MainServlet
+
+Este servlet é responsável por rotear as requisições GET e POST para os servlets correspondentes, com base no parâmetro `action` da requisição.
+
 ### RegisterDeleteServlet
 
 Servlet responsável por receber requisições para deletar um contato do banco de dados.
@@ -70,6 +76,13 @@ Servlet responsável por receber requisições para inserir um novo contato no b
 ### RegisterUpdateServlet
 
 Servlet responsável por receber requisições para atualizar um contato no banco de dados.
+
+
+
+## Interface ServletAction
+
+Esta interface define métodos para execução de ações nos servlets da aplicação.
+
 
 
 ## Páginas JSP

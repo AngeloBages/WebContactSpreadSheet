@@ -13,9 +13,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import com.contactspreadsheet.dao.*;
 import com.contactspreadsheet.models.Contact;
+import com.contactspreadsheet.main.ServletAction;
 
 @WebServlet(urlPatterns= {"/registerInsert"})
-public class RegisterInsertServlet extends HttpServlet{
+public class RegisterInsertServlet extends HttpServlet implements ServletAction{
 
 	/**
 	 * 
@@ -23,29 +24,41 @@ public class RegisterInsertServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getRequestDispatcher("WEB-INF/javapages/registerInsert.jsp").forward(req, resp);
-	}
-
-	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Dao<Contact> dao = new ContactDaoImpl();
 		
 		Contact contact = new Contact();
 		
-		contact.setName(req.getParameter("name"));
-		contact.setEmail(req.getParameter("email"));
-		contact.setAddress(req.getParameter("address"));
-		contact.setBirthDate(LocalDate.parse(req.getParameter("birth_date"), DateTimeFormatter.ofPattern("dd/M/yyyy")));
-		
 		try {
+			contact.setName(req.getParameter("name"));
+			contact.setEmail(req.getParameter("email"));
+			contact.setAddress(req.getParameter("address"));
+			contact.setBirthDate(LocalDate.parse(req.getParameter("birth_date"), DateTimeFormatter.ofPattern("dd/M/yyyy")));
+		
 			dao.insert(contact);
+			
 		} catch (SQLException e) {
 			req.getSession().setAttribute("errorMessage", e.getMessage());
+			e.printStackTrace();
+		}catch (RuntimeException e) {
+			req.getSession().setAttribute("errorMessage", "An error has ocurred!");
+			req.getRequestDispatcher("WEB-INF/javapages/index.jsp");
 			e.printStackTrace();
 		}
 		
 		resp.sendRedirect("/contact-spreadsheet/");
+	}
+
+
+	@Override
+	public String executeGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		return "WEB-INF/javapages/registerInsert.jsp";
+	}
+
+	@Override
+	public String executePost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req, resp);
+		return null;
 	}
 	
 	

@@ -3,7 +3,10 @@ package com.contactspreadsheet.servlets;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,10 +15,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import com.contactspreadsheet.dao.*;
+import com.contactspreadsheet.main.ServletAction;
 import com.contactspreadsheet.models.Contact;
 
 @WebServlet(urlPatterns= {"/registerUpdate"})
-public class RegisterUpdateServlet extends HttpServlet {
+public class RegisterUpdateServlet extends HttpServlet implements ServletAction {
 
 	/**
 	 * 
@@ -41,9 +45,11 @@ public class RegisterUpdateServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		req.setAttribute("contact", contact);
+		Date date = Date.from(contact.getBirthDate().atTime(LocalTime.of(0, 0))
+				              .atZone(ZoneOffset.systemDefault()).toInstant());
 		
-		req.getRequestDispatcher("WEB-INF/javapages/registerUpdate.jsp").forward(req, resp);
+		req.setAttribute("contact", contact);
+		req.setAttribute("contactBirthDate", date);
 	}
 
 	@Override
@@ -52,18 +58,36 @@ public class RegisterUpdateServlet extends HttpServlet {
 		int id = Integer.parseInt(req.getParameter("id"));
 		Contact contact = new Contact();
 		
-		contact.setName(req.getParameter("name"));
-		contact.setEmail(req.getParameter("email"));
-		contact.setAddress(req.getParameter("address"));
-		contact.setBirthDate(LocalDate.parse(req.getParameter("birth_date"), DateTimeFormatter.ofPattern("dd/M/yyyy")));
-		
 		try {
+			contact.setName(req.getParameter("name"));
+			contact.setEmail(req.getParameter("email"));
+			contact.setAddress(req.getParameter("address"));
+			contact.setBirthDate(LocalDate.parse(req.getParameter("birth_date"), DateTimeFormatter.ofPattern("dd/M/yyyy")));
+		
 			dao.update(id, contact);
+			
 		} catch (SQLException e) {
 			req.getSession().setAttribute("errorMessage", e.getMessage());
+			req.getRequestDispatcher("WEB-INF/javapages/index.jsp");
+			e.printStackTrace();
+		} catch (RuntimeException e) {
+			req.getSession().setAttribute("errorMessage", "An error has ocurred!");
+			req.getRequestDispatcher("WEB-INF/javapages/index.jsp");
 			e.printStackTrace();
 		}
 		
 		resp.sendRedirect("/contact-spreadsheet/");
+	}
+
+	@Override
+	public String executeGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req, resp);
+		return "WEB-INF/javapages/registerUpdate.jsp";
+	}
+
+	@Override
+	public String executePost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req, resp);
+		return null;
 	}
 }

@@ -10,10 +10,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import com.contactspreadsheet.dao.*;
+import com.contactspreadsheet.main.ServletAction;
 import com.contactspreadsheet.models.Contact;
 
 @WebServlet(urlPatterns= {"/registerDelete"})
-public class RegisterDeleteServlet extends HttpServlet {
+public class RegisterDeleteServlet extends HttpServlet implements ServletAction {
 
 	/**
 	 * 
@@ -33,6 +34,17 @@ public class RegisterDeleteServlet extends HttpServlet {
 		}
 		
 		resp.sendRedirect("/contact-spreadsheet/");	
+	}
+
+	@Override
+	public String executeGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req, resp);
+		return null;
+	}
+
+	@Override
+	public String executePost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		return null;
 	}
 
 	

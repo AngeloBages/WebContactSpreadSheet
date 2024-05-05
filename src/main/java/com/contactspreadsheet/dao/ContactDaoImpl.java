@@ -33,7 +33,7 @@ public class ContactDaoImpl implements Dao<Contact>{
 			stm.setString(2, contact.getEmail());
 			stm.setString(3, contact.getAddress());
 			
-			LocalDateTime birthDateTime = contact.getBirthDate().atTime(LocalTime.of(0, 0));
+			LocalDateTime birthDateTime = contact.getBirthDate().atTime(12, 0);
 			stm.setDate(4, new Date(birthDateTime.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli()));
 			
 			stm.execute();
@@ -115,7 +115,7 @@ public class ContactDaoImpl implements Dao<Contact>{
 			stm.setString(2, contact.getEmail());
 			stm.setString(3, contact.getAddress());
 			
-			LocalDateTime birthDateTime = contact.getBirthDate().atTime(LocalTime.of(0, 0));
+			LocalDateTime birthDateTime = contact.getBirthDate().atTime(LocalTime.of(12, 0));
 			stm.setDate(4, new Date(birthDateTime.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli()));
 			stm.setInt(5, id);
 			

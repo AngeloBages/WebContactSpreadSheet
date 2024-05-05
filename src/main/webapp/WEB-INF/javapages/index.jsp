@@ -17,8 +17,8 @@
 	<h1>Contact SpreadSheet</h1>
 	<br>
 	
-	<c:if test="${message != null}">
-		<c:out value="message"></c:out>
+	<c:if test="${errorMessage != null}">
+		<p><c:out value="${errorMessage}"></c:out></p>
 	</c:if>
 	
 	<table border="1px">
@@ -37,15 +37,15 @@
 			<td>${contact.address}</td>
 			<td>${contact.birthDate}</td>
 			<td>
-			    <a href="/contact-spreadsheet/registerUpdate?id=${contact.id}">Update</a> |
-                <a href="/contact-spreadsheet/registerDelete?id=${contact.id}">Delete</a>
+			    <a href="/contact-spreadsheet/main?action=RegisterUpdateServlet&id=${contact.id}">Update</a> |
+                <a href="/contact-spreadsheet/main?action=RegisterDeleteServlet&id=${contact.id}">Delete</a>
             </td>
 			</tr>
 	    </c:forEach>
 		
 	</table>
 	
-	<a href="${pageContext.request.servletContext.contextPath}/registerInsert">Insert new contact...</a>
+	<a href="${pageContext.request.servletContext.contextPath}/main?action=RegisterInsertServlet">Insert new contact...</a>
 
 </body>
 </html>

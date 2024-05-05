@@ -9,7 +9,7 @@
 </head>
 <body>
 
-	<form method="POST" action="registerInsert">
+	<form method="POST" action="main">
 		<label>Name:</label>
 		<input type="text" name="name"><br>
 		<label>Email:</label>

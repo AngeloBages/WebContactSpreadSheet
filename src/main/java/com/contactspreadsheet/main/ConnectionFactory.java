@@ -12,7 +12,7 @@ public class ConnectionFactory {
 
 	public static Connection getConnection() {
 		
-		Connection con;
+		Connection con = null;
 		
 		Properties dbProperties = new Properties();
 		InputStream is = ConnectionFactory.class.getResourceAsStream("../resources/dbconnection.properties");
@@ -33,7 +33,7 @@ public class ConnectionFactory {
 			con = DriverManager.getConnection(url, user, password);
 			
 		} catch (SQLException | IOException | ClassNotFoundException e) {
-			throw new RuntimeException(e.getMessage());
+			e.printStackTrace();
 		}
 		
 		return con;

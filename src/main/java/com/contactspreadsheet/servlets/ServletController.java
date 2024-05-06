@@ -11,8 +11,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns= {"/main"})
-public class MainServlet extends HttpServlet{
+@WebServlet(urlPatterns= {"/"})
+public class ServletController extends HttpServlet{
 
 	/**
 	 * 
@@ -22,28 +22,16 @@ public class MainServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		String action = req.getParameter("action");
+		String action = req.getParameter("action") == null? "ListRegisterServlet" : req.getParameter("action");
+		ServletAction servletAction = loadServlet(action);
+		
 		req.getSession().setAttribute("action", action);
-		String servletName = "com.contactspreadsheet.servlets."+ action;
-		Class<?> servlet = null;
-		
-		try {
-			servlet = Class.forName(servletName);
 		
 		
-			ServletAction servletAction = (ServletAction) servlet.getConstructor().newInstance();
-			
-			String page = servletAction.executeGet(req, resp);
-			
-			if(page != null) {
-				req.getRequestDispatcher(page).forward(req, resp);
-			}
+		String page = servletAction.executeGet(req, resp);
 		
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | 
-				 IllegalArgumentException | InvocationTargetException | NoSuchMethodException 
-				 | SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(page != null) {
+			req.getRequestDispatcher(page).forward(req, resp);
 		}
 		
 		req.getSession().removeAttribute("errorMessage");
@@ -53,20 +41,21 @@ public class MainServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		String action = (String) req.getSession().getAttribute("action");
+		ServletAction servletAction = loadServlet(action);
+		
+		servletAction.executePost(req, resp);
+		
+		req.getSession().removeAttribute("action");
+	}
+	
+	private ServletAction loadServlet(String action) throws ServletException, IOException {
 		String servletName = "com.contactspreadsheet.servlets."+ action;
 		Class<?> servlet = null;
 		
 		try {
 			servlet = Class.forName(servletName);
-		
-		
-			ServletAction servletAction = (ServletAction) servlet.getConstructor().newInstance();
+			return (ServletAction) servlet.getConstructor().newInstance();
 			
-			String page = servletAction.executePost(req, resp);
-			
-			if(!(page == null)) {
-				req.getRequestDispatcher(page).forward(req, resp);
-			}
 		
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | 
 				 IllegalArgumentException | InvocationTargetException | NoSuchMethodException 
@@ -74,9 +63,6 @@ public class MainServlet extends HttpServlet{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		req.getSession().removeAttribute("action");
+		return null;
 	}
-
-	
-	
 }

@@ -12,15 +12,15 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.contactspreadsheet.main.ConnectionFactory;
+
 import com.contactspreadsheet.models.Contact;
 
 public class ContactDaoImpl implements Dao<Contact>{
 
 	private Connection connection;
 	
-	public ContactDaoImpl() {
-		this.connection = ConnectionFactory.getConnection();
+	public ContactDaoImpl(Connection connection) {
+		this.connection = connection;
 	}
 	
 	public void insert(Contact contact) throws SQLException {

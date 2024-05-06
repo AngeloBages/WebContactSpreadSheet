@@ -1,6 +1,7 @@
 package com.contactspreadsheet.servlets;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,7 +26,8 @@ public class RegisterInsertServlet extends HttpServlet implements ServletAction{
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Dao<Contact> dao = new ContactDaoImpl();
+		Connection connection = (Connection) req.getAttribute("connection");
+		Dao<Contact> dao = new ContactDaoImpl(connection);
 		
 		Contact contact = new Contact();
 		
@@ -39,6 +41,7 @@ public class RegisterInsertServlet extends HttpServlet implements ServletAction{
 			
 		} catch (SQLException e) {
 			req.getSession().setAttribute("errorMessage", e.getMessage());
+			req.getRequestDispatcher("WEB-INF/javapages/index.jsp");
 			e.printStackTrace();
 		}catch (RuntimeException e) {
 			req.getSession().setAttribute("errorMessage", "An error has ocurred!");
@@ -56,11 +59,7 @@ public class RegisterInsertServlet extends HttpServlet implements ServletAction{
 	}
 
 	@Override
-	public String executePost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public void executePost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
-		return null;
 	}
-	
-	
-
 }

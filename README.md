@@ -13,16 +13,19 @@ main
 │           │   └── Dao.java
 │           ├── main
 │           │   ├── ConnectionFactory.java
-|           |   └── ServletAction.java 
+│           │   └── ServletAction.java 
+│           ├── filters
+│           │   └── ConnectionManagerFilter.java 
 │           ├── models
 │           │   └── Contact.java
 │           ├── resources
 │           │   └── dbconnection.properties
 │           └── servlets
-|               ├── MainServlet.java
+│               ├── ListRegisterServlet.java
 │               ├── RegisterDeleteServlet.java
 │               ├── RegisterInsertServlet.java
-│               └── RegisterUpdateServlet.java
+│               ├── RegisterUpdateServlet.java
+│               └── ServletController.java
 └── webapp
     ├── META-INF
     │   └── MANIFEST.MF
@@ -59,6 +62,7 @@ Uma interface genérica para operações de acesso a dados, como inserção, con
 Implementação da interface `Dao` para a entidade `Contact`, fornecendo métodos para manipulação de dados no banco de dados relacionados aos contatos.
 
 
+
 ## Servlets Java
 
 ### MainServlet
@@ -82,6 +86,12 @@ Servlet responsável por receber requisições para atualizar um contato no banc
 ## Interface ServletAction
 
 Esta interface define métodos para execução de ações nos servlets da aplicação.
+
+
+
+## ConnectionManagerFilter
+
+Esta classe implementa um filtro para gerenciamento de conexões com o banco de dados. Ela é responsável por abrir uma conexão com o banco de dados antes de passar a requisição para o servlet correspondente e fechar a conexão após o processamento da requisição.
 
 
 

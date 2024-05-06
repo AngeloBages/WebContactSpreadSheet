@@ -1,6 +1,7 @@
 package com.contactspreadsheet.servlets;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -29,7 +30,8 @@ public class RegisterUpdateServlet extends HttpServlet implements ServletAction 
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Dao<Contact> dao = new ContactDaoImpl();
+		Connection connection = (Connection) req.getAttribute("connection");
+		Dao<Contact> dao = new ContactDaoImpl(connection);
 		int id = Integer.parseInt(req.getParameter("id"));
 		Contact contact = null;
 		
@@ -54,7 +56,8 @@ public class RegisterUpdateServlet extends HttpServlet implements ServletAction 
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Dao<Contact> dao = new ContactDaoImpl();
+		Connection connection = (Connection) req.getAttribute("connection");
+		Dao<Contact> dao = new ContactDaoImpl(connection);
 		int id = Integer.parseInt(req.getParameter("id"));
 		Contact contact = new Contact();
 		
@@ -86,8 +89,7 @@ public class RegisterUpdateServlet extends HttpServlet implements ServletAction 
 	}
 
 	@Override
-	public String executePost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public void executePost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
-		return null;
 	}
 }

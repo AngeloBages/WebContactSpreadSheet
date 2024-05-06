@@ -12,8 +12,6 @@
 </head>
 <body>
 
-    <jsp:useBean id="dao" class="com.contactspreadsheet.dao.ContactDaoImpl"></jsp:useBean>
-
 	<h1>Contact SpreadSheet</h1>
 	<br>
 	

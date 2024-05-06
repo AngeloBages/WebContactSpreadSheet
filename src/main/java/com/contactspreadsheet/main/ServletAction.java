@@ -9,5 +9,5 @@ import jakarta.servlet.http.HttpServletResponse;
 public interface ServletAction {
 
 	public String executeGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
-	public String executePost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
+	public void executePost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
 }

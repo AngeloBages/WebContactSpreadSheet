@@ -4,111 +4,92 @@ Este projeto consiste em uma aplicação para gerenciamento de contatos, onde é
 
 ## Estrutura do Projeto
 ```
-main
-├── java
-│   └── com
-│       └── contactspreadsheet
-│           ├── dao
-│           │   ├── ContactDaoImpl.java
-│           │   └── Dao.java
-│           ├── main
-│           │   ├── ConnectionFactory.java
-│           │   └── ServletAction.java 
-│           ├── filters
-│           │   └── ConnectionManagerFilter.java 
-│           ├── models
-│           │   └── Contact.java
-│           ├── resources
-│           │   └── dbconnection.properties
-│           └── servlets
-│               ├── ListRegisterServlet.java
-│               ├── RegisterDeleteServlet.java
-│               ├── RegisterInsertServlet.java
-│               ├── RegisterUpdateServlet.java
-│               └── ServletController.java
-└── webapp
-    ├── META-INF
-    │   └── MANIFEST.MF
-    └── WEB-INF
-        ├── javapages
-        │   ├── index.jsp
-        │   ├── registerInsert.jsp
-        │   └── registerUpdate.jsp
-        ├── lib
-        │   ├── jakarta.servlet.jsp.jstl-3.0.0.jar
-        │   ├── jakarta.servlet.jsp.jstl-api-3.0.0.jar
-        │   └── mysql-connector-j-8.3.0.jar
-        └── web.xml
+target
+├── classes
+│   ├── com
+│   │   └── contactspreadsheet
+│   │       ├── dao
+│   │       │   ├── implementations
+│   │       │   │   ├── ContactDaoImpl.class
+│   │       │   │   └── ContactDaoJpaImpl.class
+│   │       │   └── interfaces
+│   │       │       ├── ContactDao.class
+│   │       │       └── Dao.class
+│   │       ├── filters
+│   │       │   └── ConnectionManagerFilter.class             
+│   │       ├── models 
+│   │       │   └── Contact.class   
+│   │       ├── resources    
+│   │       │   └── dbconnection.properties       
+│   │       ├── servlets
+│   │       │   ├── ListRegisterServlet.class 
+│   │       │   ├── RegisterDeleteServlet.class 
+│   │       │   ├── RegisterInsertServlet.class 
+│   │       │   ├── RegisterUpdateServlet.class 
+│   │       │   └── ServletController.class
+│   │       └── utils
+│   │           ├── ConnectionFactory.class
+│   │           ├── JpaUtils.class
+│   │           └── ServletAction.class
+│   └── META-INF
+│       └── persistence.xml
+└── m2e-wtp
+    └── web-resources
+        ├── META-INF
+        │   ├── maven
+        │   │   └── com.contact-spreadsheet
+        │   │       └── contact-spreadsheet
+        │   │           ├── pom.properties
+        │   │           └── pom.xml
+        │   └── MANIFEST.MF
+        └── WEB-INF
+            ├── javapages
+            │   ├── index.jsp
+            │   ├── registerInsert.jsp
+            │   └── registerUpdate.jsp
+            └── web.xml
 ```
 
+### Model
+#### Pacote `com.contactspreadsheet.models`
+- **Contact.java**: Representa um contato com atributos como nome, email, endereço e data de nascimento.
 
+### View
+- **index.jsp**: Página JSP que exibe a lista de contatos cadastrados e fornece links para inserir, atualizar e excluir contatos.
+- **registerInsert.jsp**: Página JSP que exibe um formulário para inserção de um novo contato.
+- **registerUpdate.jsp**: Página JSP que permite atualizar os detalhes de um contato.
 
-## Classes Java
+### Controller
+#### Pacote `com.contactspreadsheet.servlets`
+- **ListRegisterServlet.java**: Servlet que exibe uma lista de contatos registrados.
+- **RegisterDeleteServlet.java**: Servlet que manipula a exclusão de um contato.
+- **RegisterInsertServlet.java**: Servlet que manipula a inserção de um novo contato.
+- **RegisterUpdateServlet.java**: Servlet que manipula a atualização de um contato existente.
+- **ServletController.java**: Servlet controladora que despacha solicitações para outras servlets.
 
-### ConnectionFactory
+### DAO (Data Access Object)
+#### Pacote `com.contactspreadsheet.dao.implementations`
+- **ContactDaoImpl.java**: Implementa a interface `ContactDao` para realizar operações CRUD na entidade `Contact` usando JDBC (Java Database Connectivity).
+- **ContactDaoJpaImpl.java**: Implementa a interface `ContactDao` para realizar operações CRUD na entidade `Contact` usando JPA (Java Persistence API).
 
-Esta classe é responsável por fornecer uma conexão com o banco de dados MySQL. Ela utiliza um arquivo de propriedades para configurar os parâmetros de conexão, como URL do banco de dados, usuário e senha.
+#### Pacote `com.contactspreadsheet.dao.interfaces`
+- **ContactDao.java**: Interface que define métodos para operações CRUD na entidade `Contact`.
+- **Dao.java**: Interface genérica para operações de acesso a dados, como inserção, consulta, atualização e exclusão.
 
-### Contact
+### Utils
+#### Pacote `com.contactspreadsheet.utils`
+- **ConnectionManager.java**: Responsável por fornecer uma conexão com o banco de dados MySQL. Ela utiliza um arquivo de propriedades para configurar os parâmetros de conexão.
+- **JpaUtils.java**: Responsável por fornecer o objeto `EntityManager` do JPA.
+- **ServletAction.java**: Define uma interface que possui métodos para execução de ações nos servlets da aplicação.
 
-Representa um contato com atributos como nome, email, endereço e data de nascimento.
+#### Pacote `com.contactspreadsheet.filters`
+- **ConnectionManagerFilter.java**:  Implementa um filtro para gerenciamento de conexões com o banco de dados. Ela é responsável por abrir uma conexão com o banco de dados antes de passar a requisição para o servlet correspondente e fechar a conexão após o processamento da requisição.
 
-### Dao
-
-Uma interface genérica para operações de acesso a dados, como inserção, consulta, atualização e exclusão.
-
-### ContactDaoImpl
-
-Implementação da interface `Dao` para a entidade `Contact`, fornecendo métodos para manipulação de dados no banco de dados relacionados aos contatos.
-
-
-
-## Servlets Java
-
-### MainServlet
-
-Este servlet é responsável por rotear as requisições GET e POST para os servlets correspondentes, com base no parâmetro `action` da requisição.
-
-### RegisterDeleteServlet
-
-Servlet responsável por receber requisições para deletar um contato do banco de dados.
-
-### RegisterInsertServlet
-
-Servlet responsável por receber requisições para inserir um novo contato no banco de dados.
-
-### RegisterUpdateServlet
-
-Servlet responsável por receber requisições para atualizar um contato no banco de dados.
-
-
-
-## Interface ServletAction
-
-Esta interface define métodos para execução de ações nos servlets da aplicação.
-
-
-
-## ConnectionManagerFilter
-
-Esta classe implementa um filtro para gerenciamento de conexões com o banco de dados. Ela é responsável por abrir uma conexão com o banco de dados antes de passar a requisição para o servlet correspondente e fechar a conexão após o processamento da requisição.
-
-
-
-## Páginas JSP
-
-### index.jsp
-
-Página JSP que exibe a lista de contatos cadastrados e fornece links para inserir, atualizar e excluir contatos.
-
-### registerInsert.jsp
-
-Página JSP que exibe um formulário para inserção de um novo contato.
-
-### registerUpdate.jsp
-
-Página JSP que exibe um formulário preenchido com os dados de um contato para atualização.
-
+### Arquivos de Configuração
+- **pom.xml**: Arquivo de configuração do Maven que define as dependências e configurações do projeto.
+- **persistence.xml**: Arquivo de configuração do JPA que define as propriedades de persistência.
+- **web.xml**: Arquivo de configuração do web-app, define configurações como welcome-file e mapeamento de servlets.
+- **dbconnection.properties**: Arquivo de propriedades que contém informações de configuração para a conexão com o banco de dados.
 
 ## Configuração do Banco de Dados
 
@@ -118,6 +99,15 @@ Certifique-se de configurar corretamente o banco de dados MySQL com as seguintes
 - Usuário: root
 - Senha: root
 
+## Dependências
+
+O projeto foi contruído usando Maven com as seguintes dependências:
+
+- Hibernate Core: Version 6.5.0.Final
+- Jakarta Servlet JSP JSTL API: Version 3.0.0
+- Jakarta Servlet JSP JSTL: Version 3.0.0
+- MySQL Connector/J: Version 8.0.33
+
 
 ## Tecnologias Utilizadas
 
@@ -126,3 +116,5 @@ Certifique-se de configurar corretamente o banco de dados MySQL com as seguintes
 - JSTL (Java Standard Tag Library)
 - Servlets
 - MySQL
+- JPA (Java Persistence API)
+- Hibernate

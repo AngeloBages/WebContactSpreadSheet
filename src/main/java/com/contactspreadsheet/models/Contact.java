@@ -2,12 +2,34 @@ package com.contactspreadsheet.models;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
+@Entity
+@Table(name = "contacts")
 public class Contact {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	
+	@Column(nullable = false, length = 50)
 	private String name;
+	
+	@Column(nullable = false, length = 30)
 	private String email;
+	
+	@Column(nullable = false, length = 100)
 	private String address;
+	
+	@Column(nullable = false)
+	@Temporal(value = TemporalType.DATE)
 	private LocalDate birthDate;
 	
 	

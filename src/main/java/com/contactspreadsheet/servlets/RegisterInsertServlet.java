@@ -1,7 +1,6 @@
 package com.contactspreadsheet.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,9 +11,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import com.contactspreadsheet.dao.*;
+import com.contactspreadsheet.dao.implementations.ContactDaoJpaImpl;
+import com.contactspreadsheet.dao.interfaces.ContactDao;
 import com.contactspreadsheet.models.Contact;
-import com.contactspreadsheet.main.ServletAction;
+import com.contactspreadsheet.utils.ServletAction;
 
 @WebServlet(urlPatterns= {"/registerInsert"})
 public class RegisterInsertServlet extends HttpServlet implements ServletAction{
@@ -26,8 +26,8 @@ public class RegisterInsertServlet extends HttpServlet implements ServletAction{
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Connection connection = (Connection) req.getAttribute("connection");
-		Dao<Contact> dao = new ContactDaoImpl(connection);
+		//Connection connection = (Connection) req.getAttribute("connection");
+		ContactDao dao = new ContactDaoJpaImpl();
 		
 		Contact contact = new Contact();
 		

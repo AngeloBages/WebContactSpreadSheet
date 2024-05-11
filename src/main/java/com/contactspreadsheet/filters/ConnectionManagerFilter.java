@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import com.contactspreadsheet.main.ConnectionFactory;
+import com.contactspreadsheet.utils.ConnectionFactory;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;

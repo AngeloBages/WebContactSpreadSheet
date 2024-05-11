@@ -1,4 +1,4 @@
-package com.contactspreadsheet.main;
+package com.contactspreadsheet.utils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

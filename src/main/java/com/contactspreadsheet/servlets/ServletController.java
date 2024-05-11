@@ -3,7 +3,7 @@ package com.contactspreadsheet.servlets;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import com.contactspreadsheet.main.ServletAction;
+import com.contactspreadsheet.utils.ServletAction;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

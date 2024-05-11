@@ -1,12 +1,10 @@
 package com.contactspreadsheet.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
 
-import com.contactspreadsheet.dao.ContactDaoImpl;
-import com.contactspreadsheet.dao.Dao;
-import com.contactspreadsheet.main.ServletAction;
-import com.contactspreadsheet.models.Contact;
+import com.contactspreadsheet.dao.implementations.ContactDaoJpaImpl;
+import com.contactspreadsheet.dao.interfaces.ContactDao;
+import com.contactspreadsheet.utils.ServletAction;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,8 +23,8 @@ public class ListRegisterServlet extends HttpServlet implements ServletAction{
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Connection connection = (Connection) req.getAttribute("connection");
-		Dao<Contact> dao = new ContactDaoImpl(connection);
+		//Connection connection = (Connection) req.getAttribute("connection");
+		ContactDao dao = new ContactDaoJpaImpl();
 		
 		req.setAttribute("dao", dao);
 	}

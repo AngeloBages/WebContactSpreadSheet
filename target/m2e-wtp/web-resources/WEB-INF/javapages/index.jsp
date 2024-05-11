@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="com.contactspreadsheet.models.Contact" 
-                         import="com.contactspreadsheet.dao.ContactDaoImpl" %>
+                         import="com.contactspreadsheet.dao.implementations.ContactDaoImpl"%>
                          
 <%@ taglib uri="jakarta.tags.core" prefix="c"%> 
     
@@ -28,7 +28,7 @@
 			<th>Actions</th>
 		</tr>
 		
-	    <c:forEach items="${dao.list}" var="contact">
+	    <c:forEach items="${dao.getAll()}" var="contact">
 	    	<tr>
 			<td>${contact.name}</td>
 			<td>${contact.email}</td>
